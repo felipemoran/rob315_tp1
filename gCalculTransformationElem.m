@@ -1,0 +1,9 @@
+function [ transform ] = CalculTransformationElem( alpha, dist, theta, ray)
+%CALCULTRANSFORMATIONELEM Summary of this function goes here
+%   Detailed explanation goes here
+transform = [cos(theta)            -sin(theta)             0           dist;...
+             cos(alpha)*sin(theta)  cos(alpha)*cos(theta)   -sin(alpha) -ray*sin(alpha);...
+             sin(alpha)*sin(theta)  sin(alpha)*cos(theta)   cos(alpha)  ray*cos(alpha);...
+             0                      0                       0           1];
+end
+
