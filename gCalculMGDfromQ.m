@@ -10,3 +10,5 @@ final_trans = CalculMGD(alpha, dist, theta, ray);
 
 end
 
+
+

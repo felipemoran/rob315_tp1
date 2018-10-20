@@ -7,7 +7,7 @@ alpha = [0   pi/2 0   pi/2 -pi/2 pi/2];
 d =     [0   0    0.7 0    0     0   ];
 r =     [0.5 0    0   0.2  0     0   ];
 Offset = [0 0 pi/2 0 0 0];
-
+CONTINUE = true;
 
 while CONTINUE
     
@@ -29,6 +29,6 @@ while CONTINUE
         CONTINUE = false;
     end
     
-    k = k+1
+    k = k+1;
     
 end

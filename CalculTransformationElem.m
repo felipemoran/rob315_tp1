@@ -1,8 +1,10 @@
-function g_barre = CalculTransformationElem(alpha_i, d_i, theta_i, r_i)
-
-g_barre = [[cos(theta_i)              -sin(theta_i)             0             d_i];
-           [cos(alpha_i)*sin(theta_i) cos(alpha_i)*cos(theta_i) -sin(alpha_i) -r_i*sin(alpha_i)];
-           [sin(alpha_i)*sin(theta_i) sin(alpha_i)*cos(theta_i) cos(alpha_i)  r_i*cos(alpha_i)];
-           [0                         0                         0             1]];
-
+function [ transform ] = CalculTransformationElem( alpha, dist, theta, ray)
+%CALCULTRANSFORMATIONELEM matrice de transformation homogène entre 2
+%repères
+%   alpha ,dist, theta, ray selon les conventions de Khalil-Kleinfinger
+transform = [cos(theta)            -sin(theta)             0           dist;...
+             cos(alpha)*sin(theta)  cos(alpha)*cos(theta)   -sin(alpha) -ray*sin(alpha);...
+             sin(alpha)*sin(theta)  sin(alpha)*cos(theta)   cos(alpha)  ray*cos(alpha);...
+             0                      0                       0           1];
 end
+
