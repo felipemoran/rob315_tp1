@@ -3,7 +3,7 @@ function [ final_trans ] = CalculMGDfromQ( Q )
 %   Detailed explanation goes here
 
 
-final_trans = CalculMGD(alpha, dist, theta, ray);
+[final_trans, ~, ~] = CalculMGD(alpha, dist, theta, ray);
 
 end
 

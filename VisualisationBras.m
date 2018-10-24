@@ -3,12 +3,13 @@ function [ ] = VisualisationBras(Q)
 % de l'espace
 %   Detailed explanation goes here
 param = ParamsFromQ(Q);
-[~, intermediaires] = CalculMGD(param{:});
+[~, ~, intermediaires] = CalculMGD(param{:});
 num_reperes = size(intermediaires, 1);
 hold on;
+patch([1 -1 -1 1], [1 1 -1 -1], [0 0 0 0], [1 .5 0 .5]);
 Plot_Bras(intermediaires);
 for i = 1:num_reperes
-    repere_intermediaire = squeeze(intermediaires(i, :, :));
+    repere_intermediaire = intermediaires(:,:,i);
     pts = CoordRepere(repere_intermediaire);
     Plot_Repere(pts, i-1);
 end
@@ -36,19 +37,20 @@ end
 end
 
 function [] = Plot_Bras(reperes_intermediaires)
-x = reperes_intermediaires(:,1, 4);
-y = reperes_intermediaires(:,2, 4);
-z = reperes_intermediaires(:,3, 4);
-% disp([x y z]);
+x = squeeze(reperes_intermediaires(1, 4, :));
+y = squeeze(reperes_intermediaires(2, 4, :));
+z = squeeze(reperes_intermediaires(3, 4, :));
+% disp(x)
+disp([x y z]);
 plot3(x, y, z, 'm--', 'LineWidth', 4);
 end
 
 function [ rep0_pts ] = CoordRepere(transform )
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
-pts = [0 1 0 0;...
-       0 0 1 0;...
-       0 0 0 1;...
+pts = [0 .25 0 0;...
+       0 0 .25 0;...
+       0 0 0 .25;...
        1 1 1 1];
 % disp transform;
 % disp(transform);
