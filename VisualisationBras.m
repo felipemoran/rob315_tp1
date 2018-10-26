@@ -1,10 +1,17 @@
 function [ ] = VisualisationBras(Q)
-%VISUALISATIONREPERE dessin 3D d'un repere associé a une certaine position
-% de l'espace
-%   Detailed explanation goes here
+% affichage graphique de la positition du bras articulé
+% Inputs
+%   Q : paramètres articulaires
+% Outputs
+%   
+% La fonction affiche:
+% - la position du bras sous la forme d'une ligne épaisse
+% - les repères Ri (x en bleu, y en rouge, z en vert)
+% - le plan z=0
+
 param = ParamsFromQ(Q);
 [~, ~, intermediaires] = CalculMGD(param);
-num_reperes = size(intermediaires, 3)
+num_reperes = size(intermediaires, 3);
 hold on;
 grid on;
 patch([1 -1 -1 1], [1 1 -1 -1], [0 0 0 0], [1 .5 0 .5], 'FaceAlpha', 0.3);
@@ -29,8 +36,7 @@ for i = 1:3
     filter_ax(1) = true;
     filter_ax(1+i) = true;
     % disp(filter_ax);
-    % disp(pts(:, filter_ax));
-    
+    % disp(pts(:, filter_ax)); 
     plot3(pts(1,filter_ax), pts(2,filter_ax), pts(3,filter_ax), color_list(i));
 end
 rep_text = "";

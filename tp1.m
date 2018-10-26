@@ -27,9 +27,9 @@ jacob_f = CalculJacobienne(params_f)
 torseur_f = jacob_f * vitesse
 
 
-VisualisationBras(qi);
-pause
-VisualisationEllipsoides(qi);
+% VisualisationBras(qi);
+% pause
+VisualisationEllipsoides(qf );
 
 
 % Q7
