@@ -1,30 +1,50 @@
-function J = CalculJacobienne(alpha, d, theta, r)
+function [jacob] = CalculJacobienne(params)
+    %GCALCULJACOBIENNE Summary of this function goes here
+    % Tous les 4 premiers arguments sont des tableaux de dimension N_reperes
+    % type_liaison(i) donne le type de lien de R(i) avec R(i-1): 
+    %       - 0 pas de liaison
+    %       - 1 liaison rotoïde
+    %       - 2 prismatique
+    % 
+    N_actionneurs = 6;
+    type_liaison = [1 1 1 1 1 1 0];
+    N_reperes = size(params.alpha, 2);
+    assert(N_reperes==7, 'There should be 6 moving frames and 1 still - 7 in total');
 
-z_i = [0; 0; 1];
-N = length(theta);
-J = zeros(6,N);
-Offset = [0 0 pi/2 0 0 0];
-[g_06, g_elem] = CalculMGD(alpha, d, theta + Offset, r);
-rE = 0.1;
-g_6E = CalculTransformationElem(0, 0, 0, rE);
-g_0E = g_06 * g_6E;
+    i_actionneur = 0;
+    jacob = zeros(6, N_actionneurs);
+    [t_final, ~, t_intermediaires] = CalculMGD(params);
+    p_0E = t_final(1:3,4);
 
-for i=1:N
-%     p_iE = zeros(3,1);
-    
-    p_0E = g_0E(1:3,4);
-    g_0i = eye(4);
-    for j=1:i
-        g_0i = g_0i * g_elem(:, :, j);
+    % disp(t_intermediaires);
+
+    for i_rep = 1:N_reperes
+        if type_liaison(i_rep) == 1
+            i_actionneur = i_actionneur + 1;
+            oJi = ComposanteRotoide(i_rep, t_intermediaires, p_0E);
+            jacob(:,i_actionneur) = oJi;
+        elseif type_liaison(i_rep) == 2
+            % disp('prismatic not supported')
+        else
+            % fprintf('Fixed frame %d- no column in jacobian \n', i_rep)
+        end
     end
-    p_0i = g_0i(1:3,4);
-    p_iE = p_0E - p_0i;
-    
-    R_0i = g_0i(1:3, 1:3);
-%     fprintf("i: %d", i);
-    oJi = [ cross(R_0i * z_i, p_iE); R_0i * z_i ];
-    
-    J(1:6,i) = oJi;
-
 end
+
+function [oJi] = ComposanteRotoide(i_repere, trans_intermediaires, p_0E)
+    % fprintf('computing oJi for frame %d\n', i_repere);
+
+    Z_i = [0; 0; 1];
+
+    % confer definition of CalculMGD
+    trans_0_i = trans_intermediaires(:,:,i_repere+1);
+    % fprintf('Transform from 0 to frame %d\n', i_repere);
+    % disp(trans_0_i);
+
+    p_0i = trans_0_i(1:3,4);
+    p_iE = p_0E - p_0i;
+    % p_iE = trans_i_E(1:3,4)
+    R_0i = trans_0_i(1:3,1:3);
+    oJi = [ cross(R_0i * Z_i, p_iE) ; R_0i * Z_i];
+
 end

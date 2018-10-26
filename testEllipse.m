@@ -1,6 +1,6 @@
 qi = [-pis2 0 -pis2 -pis2 -pis2 -pis2].';
 params_i = ParamsFromQ(qi);
-t_final = CalculMGD(params_i{:});
+t_final = CalculMGD(params_i);
 xc = t_final(1,4);
 yc = t_final(2,4);
 zc = t_final(3,4);

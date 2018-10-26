@@ -3,10 +3,11 @@ function [ ] = VisualisationBras(Q)
 % de l'espace
 %   Detailed explanation goes here
 param = ParamsFromQ(Q);
-[~, ~, intermediaires] = CalculMGD(param{:});
-num_reperes = size(intermediaires, 1);
+[~, ~, intermediaires] = CalculMGD(param);
+num_reperes = size(intermediaires, 3)
 hold on;
-patch([1 -1 -1 1], [1 1 -1 -1], [0 0 0 0], [1 .5 0 .5]);
+grid on;
+patch([1 -1 -1 1], [1 1 -1 -1], [0 0 0 0], [1 .5 0 .5], 'FaceAlpha', 0.3);
 Plot_Bras(intermediaires);
 for i = 1:num_reperes
     repere_intermediaire = intermediaires(:,:,i);
@@ -31,9 +32,20 @@ for i = 1:3
     % disp(pts(:, filter_ax));
     
     plot3(pts(1,filter_ax), pts(2,filter_ax), pts(3,filter_ax), color_list(i));
-    text(pts(1,1), pts(2,1), pts(3,1), 'R'+string(index_repere));
 end
-
+rep_text = "";
+if index_repere==0
+    rep_text = "R0";
+elseif index_repere==1
+    rep_text = "R1,R2";
+elseif index_repere==3
+    rep_text = "R3";
+elseif index_repere==4
+    rep_text = "R4,R5,R6";
+elseif index_repere==7
+    rep_text = "R7";
+end
+text(pts(1,1), pts(2,1), pts(3,1),  rep_text);
 end
 
 function [] = Plot_Bras(reperes_intermediaires)
@@ -42,7 +54,7 @@ y = squeeze(reperes_intermediaires(2, 4, :));
 z = squeeze(reperes_intermediaires(3, 4, :));
 % disp(x)
 disp([x y z]);
-plot3(x, y, z, 'm--', 'LineWidth', 4);
+plot3(x, y, z, 'm.-', 'LineWidth', 4);
 end
 
 function [ rep0_pts ] = CoordRepere(transform )
